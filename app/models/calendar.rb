@@ -4,6 +4,7 @@ class Calendar < ApplicationRecord
   belongs_to :color
   belongs_to :creator, class_name: User.name, foreign_key: :creator_id
   belongs_to :owner, polymorphic: true
+  belongs_to :workspace
   has_many :events, dependent: :destroy
   has_many :user_calendars, dependent: :destroy
   has_many :users, through: :user_calendars
@@ -11,6 +12,7 @@ class Calendar < ApplicationRecord
   ATTRIBUTES_PARAMS = [
     :name, :number_of_seats, :google_calendar_id, :description, :color_id,
     :status, :is_allow_overlap, :is_auto_push_to_google_calendar,
+    :owner_id, :owner_type, :workspace_id,
     user_calendars_attributes: %I[id user_id permission_id color_id _destroy]
   ].freeze
 

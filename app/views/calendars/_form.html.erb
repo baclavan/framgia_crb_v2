@@ -4,21 +4,25 @@
   <%= render "shared/errors_messages", object: @calendar %>
   <div class="row form-group">
     <div class="col-md-6">
-      <% if is_new_action? %>
-        <%= f.label :owner, "Owner" %>
-        <div class="row col-md-6">
-          <%= select_tag :owner_id, options_for_select(@owners, current_user.name),
-            class: "form-control" %>
-        </div>
-        <%= hidden_field_tag :owner_type, User.name %>
-      <% else %>
-        <p><strong>Owner:</strong> <%= @calendar.owner_name %></p>
+      <p><strong>Owner:</strong> <%= @calendar.owner_name %></p>
+      <%= f.hidden_field :owner_type %>
+      <%= f.hidden_field :owner_id %>
+    </div>
+  </div>
+
+  <div class="row form-group">
+    <div class="col-md-3 col-xs-6">
+      <% if @calendar.owner.is_a?(Organization) %>
+        <%= f.label :workspace %>
+        <%= f.select :workspace_id,
+          options_for_select(@calendar.owner.workspaces.map{|w| [w.name, w.id]}, @calendar.workspace_id), {},
+          {class: "form-control"} %>
       <% end %>
     </div>
   </div>
 
   <div class="row form-group">
-    <div class="col-md-6">
+    <div class="col-md-3 col-xs-6">
       <%= f.label :name, "Calendar name" %>
       <%= f.text_field :name, required: true, class: "form-control",
         placeholder: t(".name") %>
@@ -26,15 +30,15 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-md-6">
+    <div class="col-md-3 col-xs-6">
       <%= f.label :number_of_seats %>
-      <%= f.text_field :number_of_seats, class: "form-control",
+      <%= f.number_field :number_of_seats, class: "form-control",
         placeholder: t(".number_of_seats") %>
     </div>
   </div>
 
   <div class="row form-group">
-    <div class="col-md-6">
+    <div class="col-md-3 col-xs-6">
       <%= f.label :google_calendar_id %>
       <%= f.text_field :google_calendar_id, class: "form-control",
         placeholder: t(".google_calendar") %>
