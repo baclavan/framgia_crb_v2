@@ -4,7 +4,6 @@ class CalendarsController < ApplicationController
   before_action :verify_permission!, only: %i(edit update)
   before_action :load_colors, except: %i(show destroy)
   before_action :load_users, :load_permissions, only: %i(new edit)
-  before_action :find_owner, only: :create
 
   def index
     @organization = Organization.find_by slug: params[:organization_id]
@@ -14,21 +13,20 @@ class CalendarsController < ApplicationController
 
   def create
     @calendar.creator_id = current_user.id
-    @calendar.owner = @owner
 
     if @calendar.save
       redirect_to root_path, flash: {success: t("calendar.success_create")}
     else
       load_users
       load_permissions
-      load_owners
       flash.now[:alert] = t "calendar.danger_create"
       render :new
     end
   end
 
   def new
-    load_owners
+    @calendar.creator = current_user
+    @calendar.owner = owner
     @calendar.color = @colors.sample
   end
 
@@ -71,25 +69,18 @@ class CalendarsController < ApplicationController
     @permissions = Permission.all
   end
 
-  def find_owner
-    case params[:owner_type]
-    when Organization.name
-      @owner = Organization.find_by slug: params[:owner_id]
-    when User.name
-      @owner = User.find_by slug: params[:owner_id]
-    end
-  end
-
-  def load_owners
-    @owners = [[current_user.name, current_user.name, {"data-owner-type" => "User"}]]
-    @owners += Organization.of_owner(current_user).map do |org|
-      [org.name, org.name, {"data-owner-type" => "Organization"}]
-    end
-  end
-
   def verify_permission!
     return if context_user.can_make_changes_and_manage_sharing?(@calendar)
     flash[:alert] = t("flash.messages.not_permission")
     redirect_to root_path
+  end
+
+  def owner
+    if params[:organization_id]
+      @organization = Organization.find_by slug: params[:organization_id]
+    end
+
+    return current_user if @organization.nil?
+    @organization
   end
 end

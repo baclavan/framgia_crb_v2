@@ -52,7 +52,7 @@ Rails.application.routes.draw do
     resources :teams
     resources :activities, only: %i(index)
     resources :members, only: %i(index)
-    resources :calendars, only: %i(index)
+    resources :calendars, only: %i(index new create)
     resource :invitations, only: %i(show create update destroy) do
       get ":id/edit", action: :edit, as: :member
     end
