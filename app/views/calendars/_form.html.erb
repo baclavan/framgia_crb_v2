@@ -11,7 +11,7 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-md-3 col-xs-6">
+    <div class="col-md-6 col-xs-12">
       <% if @calendar.owner.is_a?(Organization) %>
         <%= f.label :workspace %>
         <%= f.select :workspace_id,
@@ -22,7 +22,7 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-md-3 col-xs-6">
+    <div class="col-md-6 col-xs-12">
       <%= f.label :name, "Calendar name" %>
       <%= f.text_field :name, required: true, class: "form-control",
         placeholder: t(".name") %>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-md-3 col-xs-6">
+    <div class="col-md-3 col-xs-9">
       <%= f.label :number_of_seats %>
       <%= f.number_field :number_of_seats, class: "form-control",
         placeholder: t(".number_of_seats") %>
@@ -38,7 +38,7 @@
   </div>
 
   <div class="row form-group">
-    <div class="col-md-3 col-xs-6">
+    <div class="col-md-6 col-xs-12">
       <%= f.label :google_calendar_id %>
       <%= f.text_field :google_calendar_id, class: "form-control",
         placeholder: t(".google_calendar") %>
@@ -112,14 +112,10 @@
     </div>
     <div class="add-user-share clearfix">
       <div class="col1">
-        <%= select :user, :id,
-          @users.collect{|user| [user.email + " <#{user.name}>", user.id]},
+        <%= select :user, :id, {}, {},
           {
+            placeholder: "Select Person",
             include_blank: true,
-            selected: @user_selected ? @user_selected.id : -1,
-            placeholder: "Select Person"
-          },
-          {
             class: "form-control add-user-share-email person-select",
             id: "textbox-email-share"
           } %>

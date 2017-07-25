@@ -15,9 +15,8 @@ en:
       repeat_setting: *repeat_setting
       description: "Description"
       add_attendee: "Add"
-      name_group_attendee: "Enter Group Attendee Name"
-      add_group_attendee: "Group Attendee"
-      group_attendee_name: "Group Attendee Name"
+      name_group_attendee: "Enter group attendee name"
+      add_group_attendee: "Group attendee"
     dialog_repeat_form:
       repeat_setting: *repeat_setting
       repeats: "Repeats"
