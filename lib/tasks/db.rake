@@ -104,7 +104,7 @@ namespace :db do
           organization: org
 
         ws_item[:rooms].each do |room_name|
-          Fabricate :calendar, owner: workspace,
+          Fabricate :calendar, owner: org, workspace: workspace,
             creator_id: User.first.id, name: room_name, color: Color.all.sample
         end
       end

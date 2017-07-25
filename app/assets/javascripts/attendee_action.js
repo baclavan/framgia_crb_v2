@@ -45,7 +45,7 @@ $(document).on('ready', function() {
     return $('<li data-attendee-email="' + item.email + '">').append('<div class="ui-item"><i class="fa fa-user" aria-hidden="true"></i> <a data-user-id=' + item.user_id + '>' + item.email + '</a></div>').appendTo(ul);
   };
 
-  $('input[type="checkbox"]#group_attendee_ids').change(function() {
+  $('input[type="checkbox"].group_attendee_ids').change(function() {
     var emails = $(this).siblings().last().data('content');
     var array_email = $(emails).text().slice(0,-1).split(' ');
     if (this.checked) {
@@ -82,7 +82,7 @@ $(document).on('ready', function() {
       $('#group_attendee_name').attr('disabled','disabled')
                                .prop('checked', false);
       $('.name-group-attendee').addClass('hidden');
-      $('input[type=checkbox]#group_attendee_ids').removeAttr('checked');
+      $('input[type=checkbox].group_attendee_ids').removeAttr('checked');
     }
   }
 

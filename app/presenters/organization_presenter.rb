@@ -19,17 +19,11 @@ class OrganizationPresenter
   end
 
   def workspace_calendars
-    if @calendars["Workspace"].nil?
-      return @workspace_calendars = NullCalendar.workspace_calendars
-    end
-    @workspace_calendars ||= @calendars["Workspace"].group_by(&:owner)
+    @calendars.select{|calendar| calendar.workspace_id.present?}.group_by(&:workspace)
   end
 
   def direct_calendars
-    if @calendars["Organization"].nil?
-      return @direct_calendars = NullCalendar.direct_calendars
-    end
-    @direct_calendars ||= @calendars["Organization"]
+    @calendars.select{|calendar| calendar.workspace_id.nil?}
   end
 
   def activities
@@ -43,6 +37,6 @@ class OrganizationPresenter
   private
 
   def calendars
-    @calendars ||= Calendar.of_org(@organization).group_by(&:owner_type)
+    @calendars ||= Calendar.includes(:workspace).of_org(@organization)
   end
 end
